@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Připojení na CS2 server</title>
+  <script>
+    window.onload = function() {
+      // pokus o otevření CS2 přes Steam
+      window.location.href = "steam://connect/46.4.103.158:20009";
+
+      // fallback po 2s -> ukáže návod
+      setTimeout(function() {
+        document.body.innerHTML = `
+          <h2>⚠️ Automatické připojení se nepovedlo</h2>
+          <p>Otevři CS2 a do konzole napiš:</p>
+          <pre>connect 46.4.103.158:20009</pre>
+        `;
+      }, 2000);
+    };
+  </script>
+</head>
+<body>
+  <h1>Připojuji tě na server…</h1>
+</body>
+</html>
