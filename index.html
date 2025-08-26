@@ -2,84 +2,96 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Připojení na CS2 server</title>
-  <!-- Google Fonts -->
+  <title>NTHX Tournament CS2</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #1f1f1f, #2c2c2c);
+      color: #ff7b00;
+      text-align: center;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #2c2c2c, #1f1f1f);
-      color: #ff7b00;
-      font-family: 'Montserrat', sans-serif;
-      text-align: center;
+      justify-content: flex-start;
       overflow-x: hidden;
+      padding-top: 50px;
     }
 
-    /* 🔹 Horní páska / ticker */
+    /* 🔹 Ticker */
     .ticker {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: #ff7b00;
-      color: #2c2c2c;
-      font-weight: bold;
-      font-size: 1.2em;
-      overflow: hidden;
       height: 40px;
+      background: #ff7b00;
+      color: #1f1f1f;
       display: flex;
       align-items: center;
+      overflow: hidden;
+      font-weight: bold;
       box-shadow: 0 3px 8px rgba(0,0,0,0.4);
       z-index: 1000;
     }
 
     .ticker-text {
       display: inline-block;
-      padding-left: 100%; /* start mimo obrazovku */
+      padding-left: 100%;
       white-space: nowrap;
-      animation: scroll-left 12s linear infinite;
+      animation: scroll-left 15s linear infinite;
     }
 
     @keyframes scroll-left {
-      0%   { transform: translateX(0); }
+      0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
 
     h1 {
-      margin: 80px 0 20px; /* dolů kvůli pásce */
+      margin-top: 60px;
+      font-size: 2.2em;
+      text-shadow: 0 0 8px #ff7b00;
     }
 
-    /* 🔹 Odpočet */
     #countdown {
-      font-size: 1.5em;
-      margin-bottom: 20px;
-      color: #ff7b00;
+      font-size: 1.8em;
+      margin: 20px 0;
       font-weight: bold;
+      animation: pulse 1s infinite;
     }
 
-    /* 🔹 Tlačítko Připojit */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .btn-container {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
     .btn {
       background: #ff7b00;
-      color: #2c2c2c;
+      color: #1f1f1f;
       border: 2px solid #ff7b00;
       padding: 15px 40px;
       font-size: 1.5em;
       font-weight: bold;
       border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s ease;
       box-shadow: 0 6px 0 #cc6300, 0 8px 15px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .btn:hover {
+      background: linear-gradient(45deg, #ff7b00, #ffa600);
       transform: translateY(-2px);
       box-shadow: 0 8px 0 #cc6300, 0 10px 20px rgba(0,0,0,0.4);
-      background: linear-gradient(45deg, #ff7b00, #ffa600);
     }
 
     .btn:active {
@@ -87,70 +99,157 @@
       box-shadow: 0 3px 0 #cc6300, 0 5px 10px rgba(0,0,0,0.4);
     }
 
-    /* 🔹 Fallback instrukce */
-    pre {
-      margin-top: 25px;
-      background: rgba(255, 123, 0, 0.1);
-      border: 1px solid #ff7b00;
-      padding: 10px 20px;
+    /* 🔹 Server status */
+    #server-status {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      padding: 8px 15px;
       border-radius: 8px;
       display: inline-block;
+      background: rgba(255,123,0,0.1);
       color: #fff;
-      font-size: 1.1em;
+      border: 1px solid #ff7b00;
+    }
+
+    /* 🔹 Leaderboard */
+    #leaderboard {
+      margin-top: 20px;
+      background: rgba(255,123,0,0.05);
+      padding: 15px 25px;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: left;
+      border: 1px solid #ff7b00;
+    }
+
+    #leaderboard h3 {
+      margin-top: 0;
+      color: #ff7b00;
+    }
+
+    #leaderboard ol {
+      padding-left: 20px;
+      margin: 0;
+      color: #fff;
+    }
+
+    /* 🔹 Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top:0;
+      left:0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      color: #ff7b00;
+      font-family: 'Montserrat', sans-serif;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      z-index: 2000;
+    }
+
+    .modal pre {
+      color: #fff;
+      background: rgba(255,123,0,0.1);
+      border-radius: 8px;
+      padding: 10px 20px;
+      display: inline-block;
+    }
+
+    .close-modal {
+      margin-top: 15px;
+      cursor: pointer;
+      padding: 8px 15px;
+      border-radius: 8px;
+      background: #ff7b00;
+      color: #1f1f1f;
+      font-weight: bold;
+      border: none;
     }
   </style>
-  <script>
-    // 🔹 Odpočet
-    const matchDate = new Date("2025-08-28T17:00:00"); // YYYY-MM-DDTHH:MM:SS
-
-    function updateCountdown() {
-      const now = new Date();
-      const diff = matchDate - now;
-
-      if(diff <= 0){
-        document.getElementById("countdown").innerHTML = "🏆 Zápas právě začíná!";
-        clearInterval(countdownInterval);
-        return;
-      }
-
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      document.getElementById("countdown").innerHTML = `⏳ Odpočet: ${hours}h ${minutes}m ${seconds}s`;
-    }
-
-    const countdownInterval = setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-    // 🔹 Připojení na server
-    function connect() {
-      window.location.href = "steam://connect/46.4.103.158:20009";
-
-      // fallback po 2s
-      setTimeout(function() {
-        document.body.innerHTML = `
-          <div style="padding: 40px; color: #ff7b00; font-family: 'Montserrat', sans-serif; text-align: center;">
-            <h2>⚠️ Automatické připojení se nepovedlo</h2>
-            <p>Otevři CS2 a do konzole napiš:</p>
-            <pre>connect 46.4.103.158:20009</pre>
-          </div>
-        `;
-      }, 2000);
-    }
-  </script>
 </head>
 <body>
-  <!-- 🔹 Ticker -->
+
   <div class="ticker">
     <div class="ticker-text">🔥 NTHX Tournament 28/08 17:00 🔥 NTHX Tournament 28/08 17:00 🔥</div>
   </div>
 
   <h1>NTHX Tournament Match</h1>
 
-  <!-- 🔹 Odpočet -->
   <div id="countdown">⏳ Odpočet: ...</div>
 
-  <button class="btn" onclick="connect()">Připojit</button>
+  <div id="server-status">Status serveru: Načítání...</div>
+
+  <div class="btn-container">
+    <button class="btn" onclick="connect()">Připojit</button>
+    <button class="btn" onclick="copyIP()">📋 Copy IP</button>
+  </div>
+
+  <div id="leaderboard">
+    <h3>Top hráči</h3>
+    <ol>
+      <li>Hráč1</li>
+      <li>Hráč2</li>
+      <li>Hráč3</li>
+    </ol>
+  </div>
+
+  <!-- Modal fallback -->
+  <div class="modal" id="fallbackModal">
+    <h2>⚠️ Automatické připojení se nepovedlo</h2>
+    <p>Otevři CS2 a do konzole napiš:</p>
+    <pre>connect 46.4.103.158:20009</pre>
+    <button class="close-modal" onclick="closeModal()">Zavřít</button>
+  </div>
+
+<script>
+  // 🔹 Odpočet
+  const matchDate = new Date("2025-08-28T17:00:00");
+  function updateCountdown() {
+    const now = new Date();
+    const diff = matchDate - now;
+    if(diff <= 0){
+      document.getElementById("countdown").innerHTML = "🏆 Zápas právě začíná!";
+      clearInterval(countdownInterval);
+      return;
+    }
+    const hours = Math.floor(diff / (1000*60*60));
+    const minutes = Math.floor((diff % (1000*60*60))/(1000*60));
+    const seconds = Math.floor((diff % (1000*60))/1000);
+    document.getElementById("countdown").innerHTML = `⏳ Odpočet: ${hours}h ${minutes}m ${seconds}s`;
+  }
+  const countdownInterval = setInterval(updateCountdown,1000);
+  updateCountdown();
+
+  // 🔹 Připojení na server
+  function connect(){
+    window.location.href = "steam://connect/46.4.103.158:20009";
+    setTimeout(()=>document.getElementById("fallbackModal").style.display="flex",2000);
+  }
+
+  function closeModal(){
+    document.getElementById("fallbackModal").style.display="none";
+  }
+
+  // 🔹 Copy IP
+  function copyIP(){
+    navigator.clipboard.writeText("46.4.103.158:20009").then(()=>{
+      alert("IP zkopírována do schránky!");
+    });
+  }
+
+  // 🔹 Server status (placeholder)
+  function updateServerStatus(){
+    // Tady můžeš doplnit GameTracker API nebo vlastní A2S
+    const online = true; // placeholder
+    const players = 7;   // placeholder
+    document.getElementById("server-status").innerHTML = `Status serveru: ${online ? "Online" : "Offline"} | Hráči: ${players}/10`;
+  }
+  updateServerStatus();
+</script>
+
 </body>
 </html>
