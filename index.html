@@ -2,13 +2,12 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Připojení na CS2 server</title>
-  <!-- Google Fonts -->
+  <title>NTHX Tournament CS2</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -20,7 +19,7 @@
       overflow-x: hidden;
     }
 
-        /* 🔹 Ticker */
+    /* 🔹 Ticker */
     .ticker {
       position: fixed;
       top: 0;
@@ -37,25 +36,47 @@
       box-shadow: 0 0 10px #ff7b00, 0 0 20px #ff7b00, 0 3px 8px rgba(0,0,0,0.4);
       z-index: 1000;
     }
-    
+
     .ticker-text {
       display: inline-block;
-      padding-left: 100%; /* start mimo obrazovku */
+      padding-left: 100%;
       white-space: nowrap;
       animation: scroll-left 12s linear infinite;
       text-shadow: 0 0 5px #ff7b00, 0 0 10px #ffa600, 0 0 15px #ff7b00;
-}
-    
-    h1 {
-      margin: 80px 0 20px;
-      font-size: 2.2em;
-      text-shadow: 0 0 8px #ff7b00, 0 0 15px #ffa600, 0 0 20px #ff7b00;
     }
 
-
     @keyframes scroll-left {
-      0%   { transform: translateX(0); }
+      0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
+    }
+
+    /* 🔹 Steam uživatel */
+    #user-block {
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 15px;
+      justify-content: center;
+    }
+    #user-block img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #ff7b00;
+      box-shadow: 0 0 8px #ff7b00, 0 0 15px #ffa600;
+    }
+    #user-block span {
+      font-weight: bold;
+      font-size: 1.5em;
+      color: #ff7b00;
+      text-shadow: 0 0 5px #ff7b00, 0 0 10px #ffa600;
+    }
+
+    /* 🔹 Nadpis */
+    h1 {
+      margin: 20px 0;
+      font-size: 2.2em;
+      text-shadow: 0 0 8px #ff7b00, 0 0 15px #ffa600, 0 0 20px #ff7b00;
     }
 
     /* 🔹 Odpočet */
@@ -66,7 +87,7 @@
       font-weight: bold;
     }
 
-    /* 🔹 Tlačítko Připojit */
+    /* 🔹 Tlačítko Připojit / Přihlásit */
     .btn {
       background: #ff7b00;
       color: #2c2c2c;
@@ -78,6 +99,8 @@
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 6px 0 #cc6300, 0 8px 15px rgba(0,0,0,0.4);
+      text-decoration: none;
+      display: inline-block;
     }
 
     .btn:hover {
@@ -102,47 +125,26 @@
       color: #fff;
       font-size: 1.1em;
     }
+
+    /* 🔹 Footer */
+    footer {
+      background-color: #1f1f1f;
+      color: #ff7b00;
+      padding: 20px;
+      text-align: center;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    }
+    footer a {
+      color: #ff7b00;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
-  <script>
-    // 🔹 Odpočet
-    const matchDate = new Date("2025-08-28T17:00:00"); // YYYY-MM-DDTHH:MM:SS
-
-    function updateCountdown() {
-      const now = new Date();
-      const diff = matchDate - now;
-
-      if(diff <= 0){
-        document.getElementById("countdown").innerHTML = "🏆 Zápas právě začíná!";
-        clearInterval(countdownInterval);
-        return;
-      }
-
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      document.getElementById("countdown").innerHTML = `⏳ Odpočet: ${hours}h ${minutes}m ${seconds}s`;
-    }
-
-    const countdownInterval = setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-    // 🔹 Připojení na server
-    function connect() {
-      window.location.href = "steam://connect/46.4.103.158:20009";
-
-      // fallback po 2s
-      setTimeout(function() {
-        document.body.innerHTML = `
-          <div style="padding: 40px; color: #ff7b00; font-family: 'Montserrat', sans-serif; text-align: center;">
-            <h2>⚠️ Automatické připojení se nepovedlo</h2>
-            <p>Otevři CS2 a do konzole napiš:</p>
-            <pre>connect 46.4.103.158:20009</pre>
-          </div>
-        `;
-      }, 2000);
-    }
-  </script>
 </head>
 <body>
   <!-- 🔹 Ticker -->
@@ -150,11 +152,75 @@
     <div class="ticker-text">🔥 NTHX Tournament 28/08 17:00 🔥 NTHX Tournament 28/08 17:00 🔥</div>
   </div>
 
+  <!-- 🔹 Steam uživatel -->
+  <div id="user-block">
+    <img id="user-avatar" src="" alt="Avatar">
+    <span id="user-name"></span>
+  </div>
+
   <h1>NTHX Tournament Match</h1>
 
   <!-- 🔹 Odpočet -->
   <div id="countdown">⏳ Odpočet: ...</div>
 
-  <button class="btn" onclick="connect()">Připojit</button>
+  <!-- 🔹 Přihlášení / Připojit -->
+  <a id="steam-btn" href="/auth/steam" class="btn">Přihlásit se přes Steam</a>
+  <button id="connect-btn" class="btn" onclick="connect()" style="display:none;">Připojit</button>
+
+  <!-- 🔹 Footer -->
+  <footer>
+    &copy; 2025 NTHX Tournament | <a href="https://discord.gg/AVfj3HxuwH">Připoj se na Discord</a>
+  </footer>
+
+  <script>
+    // 🔹 Odpočet
+    const matchDate = new Date("2025-08-28T17:00:00");
+    function updateCountdown() {
+      const now = new Date();
+      const diff = matchDate - now;
+      if(diff <= 0){
+        document.getElementById("countdown").innerHTML = "🏆 Zápas právě začíná!";
+        clearInterval(countdownInterval);
+        return;
+      }
+      const hours = Math.floor(diff / (1000*60*60));
+      const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+      const seconds = Math.floor((diff % (1000*60)) / 1000);
+      document.getElementById("countdown").innerHTML = `⏳ Odpočet: ${hours}h ${minutes}m ${seconds}s`;
+    }
+    const countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 🔹 Připojení na server
+    function connect() {
+      window.location.href = "steam://connect/46.4.103.158:20009";
+      setTimeout(function(){
+        document.body.innerHTML = `
+          <div style="padding:40px; color:#ff7b00; font-family:'Montserrat',sans-serif; text-align:center;">
+            <h2>⚠️ Automatické připojení se nepovedlo</h2>
+            <p>Otevři CS2 a do konzole napiš:</p>
+            <pre>connect 46.4.103.158:20009</pre>
+          </div>`;
+      },2000);
+    }
+
+    // 🔹 Získání Steam uživatele
+    async function fetchUser() {
+      try {
+        const res = await fetch('/user');
+        const data = await res.json();
+        if(data){
+          document.getElementById('user-avatar').src = data.photos[2].value;
+          document.getElementById('user-name').innerText = data.displayName;
+          document.getElementById('user-block').style.display = 'flex';
+          document.getElementById('steam-btn').style.display = 'none';
+          document.getElementById('connect-btn').style.display = 'inline-block';
+        }
+      } catch(e){
+        console.error(e);
+      }
+    }
+    fetchUser();
+  </script>
 </body>
 </html>
