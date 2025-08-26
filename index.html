@@ -50,31 +50,8 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* 🔹 Steam uživatel */
-    #user-block {
-      margin-bottom: 20px;
-      display: none;
-      align-items: center;
-      gap: 15px;
-      justify-content: center;
-    }
-    #user-block img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 2px solid #ff7b00;
-      box-shadow: 0 0 8px #ff7b00, 0 0 15px #ffa600;
-    }
-    #user-block span {
-      font-weight: bold;
-      font-size: 1.5em;
-      color: #ff7b00;
-      text-shadow: 0 0 5px #ff7b00, 0 0 10px #ffa600;
-    }
-
-    /* 🔹 Nadpis */
     h1 {
-      margin: 20px 0;
+      margin: 80px 0 20px;
       font-size: 2.2em;
       text-shadow: 0 0 8px #ff7b00, 0 0 15px #ffa600, 0 0 20px #ff7b00;
     }
@@ -87,7 +64,7 @@
       font-weight: bold;
     }
 
-    /* 🔹 Tlačítko Připojit / Přihlásit */
+    /* 🔹 Tlačítko Připojit */
     .btn {
       background: #ff7b00;
       color: #2c2c2c;
@@ -152,20 +129,13 @@
     <div class="ticker-text">🔥 NTHX Tournament 28/08 17:00 🔥 NTHX Tournament 28/08 17:00 🔥</div>
   </div>
 
-  <!-- 🔹 Steam uživatel -->
-  <div id="user-block">
-    <img id="user-avatar" src="" alt="Avatar">
-    <span id="user-name"></span>
-  </div>
-
   <h1>NTHX Tournament Match</h1>
 
   <!-- 🔹 Odpočet -->
   <div id="countdown">⏳ Odpočet: ...</div>
 
-  <!-- 🔹 Přihlášení / Připojit -->
-  <a id="steam-btn" href="/auth/steam" class="btn">Přihlásit se přes Steam</a>
-  <button id="connect-btn" class="btn" onclick="connect()" style="display:none;">Připojit</button>
+  <!-- 🔹 Připojit -->
+  <button class="btn" onclick="connect()">Připojit</button>
 
   <!-- 🔹 Footer -->
   <footer>
@@ -203,24 +173,6 @@
           </div>`;
       },2000);
     }
-
-    // 🔹 Získání Steam uživatele
-    async function fetchUser() {
-      try {
-        const res = await fetch('/user');
-        const data = await res.json();
-        if(data){
-          document.getElementById('user-avatar').src = data.photos[2].value;
-          document.getElementById('user-name').innerText = data.displayName;
-          document.getElementById('user-block').style.display = 'flex';
-          document.getElementById('steam-btn').style.display = 'none';
-          document.getElementById('connect-btn').style.display = 'inline-block';
-        }
-      } catch(e){
-        console.error(e);
-      }
-    }
-    fetchUser();
   </script>
 </body>
 </html>
