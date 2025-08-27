@@ -137,7 +137,8 @@
 
   <!-- 🔹 Připojit -->
   <button class="btn" onclick="connect()">Připojit</button>
-
+  <button class="btn" style="margin-top:15px;" onclick="connectGOTV()">Sledovat GOTV</button>
+  
   <!-- 🔹 Footer -->
   <footer>
     &copy; 2025 NTHX Tournament | <a href="https://discord.gg/AVfj3HxuwH">Připoj se na Discord</a>
@@ -172,6 +173,20 @@
             <h2>⚠️ Jestliže automatické připojení selhalo:</h2>
             <p>Otevři CS2 a do konzole napiš:</p>
             <pre>connect 46.4.103.158:20009</pre>
+          </div>`;
+      },2000);
+    }
+
+    // 🔹 Připojení na GOTV
+    function connectGOTV() {
+      window.location.href = "steam://connect/46.4.103.158:20010";
+      setTimeout(function(){
+        document.body.innerHTML = `
+          <div style="padding:40px; color:#ff7b00; font-family:'Montserrat',sans-serif; text-align:center;">
+            <h2>📺 Připojujeme k GOTV</h2>
+            <h2>⚠️ Jestliže automatické připojení selhalo:</h2>
+            <p>Otevři CS2 a do konzole napiš:</p>
+            <pre>connect 46.4.103.158:20010</pre>
           </div>`;
       },2000);
     }
