@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>NTHX Tournament CS2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #2c2c2c, #1f1f1f);
+      color: #ff7b00;
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      margin: 80px 0 20px;
+      font-size: 2.2em;
+      text-shadow: 0 0 20px #ff7b00, 0 0 20px #ffa600, 0 0 20px #ff7b00
+    }
+
+    /* 🔹 Odpočet */
+    #countdown {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      color: #ff7b00;
+      font-weight: bold;
+    }
+    
+    /* 🔹 Footer */
+    footer {
+      background-color: #1f1f1f;
+      color: #ff7b00;
+      padding: 20px;
+      text-align: center;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    }
+    footer a {
+      color: #ff7b00;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>NTHX Tournament</h1>
+
+  <!-- 🔹 Odpočet -->
+  <div id="countdown">⏳ Odpočet: ...</div>
+  
+  <!-- 🔹 Footer -->
+  <footer>
+    &copy; 2025 NTHX Tournament | <a href="https://discord.gg/AVfj3HxuwH">Připoj se na Discord</a>
+  </footer>
+
+  <script>
+    // 🔹 Odpočet
+    const matchDate = new Date("2025-08-28T17:00:00");
+    function updateCountdown() {
+      const now = new Date();
+      const diff = matchDate - now;
+      if(diff <= 0){
+        document.getElementById("countdown").innerHTML = "🏆 Zápas právě začíná!";
+        clearInterval(countdownInterval);
+        return;
+      }
+      const hours = Math.floor(diff / (1000*60*60));
+      const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+      const seconds = Math.floor((diff % (1000*60)) / 1000);
+      document.getElementById("countdown").innerHTML = `⏳ Odpočet: ${hours}h ${minutes}m ${seconds}s`;
+    }
+    const countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 🔹 Připojení na server
+    function connect() {
+      window.location.href = "steam://connect/46.4.103.158:20009";
+      setTimeout(function(){
+        document.body.innerHTML = `
+          <div style="padding:40px; color:#ff7b00; font-family:'Montserrat',sans-serif; text-align:center;">
+            <h2>🔗 Připojujeme</h2>
+            <h2>⚠️ Jestliže automatické připojení selhalo:</h2>
+            <p>Otevři CS2 a do konzole napiš:</p>
+            <pre>connect 46.4.103.158:20009</pre>
+          </div>`;
+      },2000);
+    }
+
+    // 🔹 Připojení na GOTV
+    function connectGOTV() {
+      window.location.href = "steam://connect/46.4.103.158:20010";
+      setTimeout(function(){
+        document.body.innerHTML = `
+          <div style="padding:40px; color:#ff7b00; font-family:'Montserrat',sans-serif; text-align:center;">
+            <h2>📺 Připojujeme k GOTV</h2>
+            <h2>⚠️ Jestliže automatické připojení selhalo:</h2>
+            <p>Otevři CS2 a do konzole napiš:</p>
+            <pre>connect 46.4.103.158:20010</pre>
+          </div>`;
+      },2000);
+    }
+  </script>
+</body>
+</html>
