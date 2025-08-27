@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>NTHX GOTV Stream</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #2c2c2c, #1f1f1f);
+    color: #ff7b00;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+  }
+  h1 { font-size: 2em; margin-bottom: 20px; text-shadow: 0 0 8px #ff7b00; }
+  .btn {
+    background: #ff7b00;
+    color: #2c2c2c;
+    border: 2px solid #ff7b00;
+    padding: 15px 40px;
+    font-size: 1.5em;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 0 #cc6300, 0 8px 15px rgba(0,0,0,0.4);
+  }
+  .btn:hover { background: linear-gradient(45deg, #ff7b00, #ffa600); transform: translateY(-2px); }
+  .btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #cc6300; }
+  video {
+    max-width: 90%;
+    border: 2px solid #ff7b00;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #ff7b00;
+  }
+  pre {
+    margin-top: 25px;
+    background: rgba(255,123,0,0.1);
+    border: 1px solid #ff7b00;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+  <h1>NTHX GOTV Stream</h1>
+
+  <a class="btn" onclick="startGOTV()">Spustit GOTV Stream</a>
+
+  <div id="video-container" style="display:none;">
+    <video id="gotv-video" controls autoplay></video>
+    <pre>Pokud stream nejde, zkontroluj tvou síť nebo použij veřejnou IP serveru a port nastavený v tvém tv_broadcast_url.</pre>
+  </div>
+
+<script>
+function startGOTV() {
+  const video = document.getElementById('gotv-video');
+  const container = document.getElementById('video-container');
+
+  // Zde změň podle tvého GOTV URL
+  video.src = "http://46.4.103.158:8080"; 
+  container.style.display = 'block';
+}
+</script>
+</body>
+</html>
